@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Avatar Fetcher</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        img { margin-top: 20px; max-width: 200px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Roblox Avatar Fetcher</h1>
+    <input type="text" id="username" placeholder="Enter Roblox Username" />
+    <button id="fetch-button">Fetch Avatar</button>
+    <div class="error" id="error-message"></div>
+    <img id="avatar" src="" alt="Avatar Thumbnail" style="display:none;">
+
+    <script>
+        document.getElementById('fetch-button').addEventListener('click', async () => {
+            const username = document.getElementById('username').value;
+            const errorMessage = document.getElementById('error-message');
+            const avatarImage = document.getElementById('avatar');
+
+            errorMessage.textContent = ''; // Clear previous messages
+            avatarImage.style.display = 'none'; // Hide previous avatar
+
+            if (!username) {
+                errorMessage.textContent = 'Please enter a username.';
+                return;
+            }
+
+            try {
+                const response = await fetch('/getAvatar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    errorMessage.textContent = data.message;
+                    return;
+                }
+
+                const data = await response.json();
+                avatarImage.src = data.thumbnailUrl;
+                avatarImage.style.display = 'block'; // Show avatar
+            } catch (error) {
+                errorMessage.textContent = 'Error fetching avatar.';
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
