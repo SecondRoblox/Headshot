@@ -1,0 +1,14 @@
+{
+  "name": "roblox-avatar-fetcher",
+  "version": "1.0.0",
+  "description": "A simple app to fetch Roblox avatar thumbnails.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "axios": "^0.26.1",
+    "cors": "^2.8.5"
+  }
+}
